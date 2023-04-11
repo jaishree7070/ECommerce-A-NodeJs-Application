@@ -1,0 +1,50 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css">
+    </head>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <% if (products.length > 0) { %>
+                <div class="grid">
+                    <% products.forEach(product => { %>
+                        <article class="card product-item">
+                            <header class="card__header">
+                                <h1 class="product__title"><%= product.productData.title %></h1>
+                            </header>
+                            <div class="card__image">
+                                <img src="<%= product.productData.imageUrl%>"
+                                    alt="<%= product.productData.title %>">
+                            </div>
+                            <div class="card__content">
+                                <h2 class="product__price">$<%= product.productData.price %></h2>
+                                <p class="product__description"><%= product.productData.description %></p>
+                            </div>
+                            <div class="card__actions">
+                                <form action="/cart-delete-item" method="POST">
+                                    <input type="hidden" value="<%= product.productData.id %>" name="productId">
+                                    <button class="btn" type="submit">Delete</button>
+                                </form>
+                                <div>
+                                    <p>Quantity: <%=product.qty%></p>    
+                                <div class="card__actions">
+                                    <form class="card__actions" action="/cart-delete-one-item" method="post">
+                                        <button class="btn">-1</button>
+                                        <input hidden name="productId" value="<%= product.productData.id%>" />
+                                    </form>
+                                    <form class="card__actions" action="/cart" method="post">
+                                        <button class="btn">+1</button>
+                                        <input hidden name="productId" value="<%= product.productData.id%>" />
+                                    </form>
+                                </div> 
+                                </div>                                                         
+                            </div>
+                        </article>
+                    <% }) %>
+                    </div>
+                    <h1>Total Price :<%=products.totalPrice%></h1>
+            <% } else { %>
+                <h1>No Products in Cart!</h1>
+            <% } %>
+        </main>
+        <%- include('../includes/end.ejs') %>
+
